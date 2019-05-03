@@ -8,9 +8,11 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
 
 /**
@@ -27,24 +29,49 @@ public class FuncionesFrame extends javax.swing.JFrame {
     }
     
     public void open(File file) throws IOException {
-        try(FileInputStream input=new FileInputStream(file)) {
-            /* Parsear json */
-            ObjectMapper objectMapper=new ObjectMapper();
-            Data data = objectMapper.readValue(input, Data.class);
-            Map<String, List<Funcion>> funcionesPorLugar=new LinkedHashMap<>();
-            for (Map.Entry<String, List<InfoFuncion>> entry : data.getFunciones().entrySet()) {
-                for (InfoFuncion infoFuncion : entry.getValue()) {
-                    Funcion funcion=new Funcion()
-                        .pelicula(data.getPeliculas().get(infoFuncion.getIdPelicula()))
-                        .inicia(infoFuncion.getInicio());
-                    if(!funcionesPorLugar.containsKey(entry.getKey())) {
-                        funcionesPorLugar.put(entry.getKey(), new LinkedList<>());
-                    }
-                    funcionesPorLugar.get(entry.getKey()).add(funcion);
-                }
-            }
-            panelFunciones1.setIntervalosPorLugar(funcionesPorLugar);
+        new Loader(file).execute();
+    }
+    
+    public class Loader extends SwingWorker<Map<String, List<Funcion>>, Object> {
+        private File file;
+
+        public Loader(File file) {
+            this.file = file;
         }
+        
+        @Override
+        protected Map<String, List<Funcion>> doInBackground() throws Exception {
+            Map<String, List<Funcion>> funcionesPorLugar=new LinkedHashMap<>();
+            try(FileInputStream input=new FileInputStream(file)) {
+                /* Parsear json */
+                ObjectMapper objectMapper=new ObjectMapper();
+                Data data = objectMapper.readValue(input, Data.class);
+                for (Map.Entry<String, List<InfoFuncion>> entry : data.getFunciones().entrySet()) {
+                    for (InfoFuncion infoFuncion : entry.getValue()) {
+                        Funcion funcion=new Funcion()
+                            .pelicula(data.getPeliculas().get(infoFuncion.getIdPelicula()))
+                            .inicia(infoFuncion.getInicio());
+                        if(!funcionesPorLugar.containsKey(entry.getKey())) {
+                            funcionesPorLugar.put(entry.getKey(), new LinkedList<>());
+                        }
+                        funcionesPorLugar.get(entry.getKey()).add(funcion);
+                    }
+                }
+                return funcionesPorLugar;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                panelFunciones1.setIntervalosPorLugar(get());
+            } catch (InterruptedException ex) {
+                Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ExecutionException ex) {
+                Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
 
     /**

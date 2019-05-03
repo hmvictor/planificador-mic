@@ -73,9 +73,7 @@ public class PanelFunciones extends JPanel {
         Color[][] colors=new Color[][]{
             new Color[]{new Color(146, 196, 102, 200), new Color(72, 99, 57)}, 
             new Color[]{new Color(140, 172, 209, 200), new Color(40, 63, 76)}, 
-            new Color[]{new Color(242, 98, 70, 200), new Color(104, 36, 19)}, 
-            new Color[]{Color.PINK, Color.WHITE}, 
-            new Color[]{Color.CYAN, Color.WHITE}
+            new Color[]{new Color(242, 98, 70, 200), new Color(104, 36, 19)}
         };
         Color currentColor=g2d.getColor();
         Stroke currentStroke = g2d.getStroke();
@@ -91,7 +89,7 @@ public class PanelFunciones extends JPanel {
         for(long i=minMinutes; i <= maxMinutes; i+=30) {
             if(i % 60 == 0) {
                 g2d.setColor(Color.BLACK);
-                g2d.drawString(LocalTime.of((int)i/60, (int)i%60).toString(), (float)getScaledX(i, scale, labelWidth), (float)fontMetrics.getHeight());
+                g2d.drawString(LocalTime.of((int)i/60%24, (int)i%60).toString(), (float)getScaledX(i, scale, labelWidth), (float)fontMetrics.getHeight());
             }else{
                 g2d.setColor(Color.LIGHT_GRAY);
             }
@@ -106,9 +104,9 @@ public class PanelFunciones extends JPanel {
             for (Funcion funcion : entry.getValue()) {
                 Intervalo intervalo=funcion.getIntervalo();
                 Rectangle2D.Double rectangle=getRectangle(intervalo, scale, y, labelWidth, offsetY);
-                g2d.setColor(colors[y][0]);
+                g2d.setColor(colors[y%colors.length][0]);
                 g2d.fill(rectangle);
-                g2d.setColor(colors[y][1]);
+                g2d.setColor(colors[y%colors.length][1]);
                 g2d.draw(rectangle);
                 String intervaloString=intervalo.getStartTime().toString()+" - "+intervalo.getEndTime().toString();
                 g2d.setColor(Color.BLACK);
