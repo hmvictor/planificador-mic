@@ -1,15 +1,21 @@
 package org.intervalos.intervalos;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  *
  * @author Víctor
  */
 public class Pelicula {
     private String nombre;
+    @JsonProperty
     private int duracionMinutos;
 
     public Pelicula(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Pelicula() {
     }
 
     public String getNombre() {

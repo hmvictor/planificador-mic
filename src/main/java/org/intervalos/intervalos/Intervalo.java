@@ -14,6 +14,11 @@ public class Intervalo {
         startTime=LocalTime.of(hour, minute);
         return this;
     }
+    
+    public Intervalo start(LocalTime inicio) {
+        startTime=inicio;
+        return this;
+    }
 
     public Intervalo duration(int minutes) {
         this.duration=minutes;
@@ -27,5 +32,5 @@ public class Intervalo {
     public LocalTime getEndTime(){
         return startTime.plusMinutes(duration);
     } 
-    
+
 }

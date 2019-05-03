@@ -52,6 +52,7 @@ public class PanelFunciones extends JPanel {
         }
         minMinutes=minMinutes - minMinutes % 30;
         maxMinutes=maxMinutes + (60-maxMinutes % 30);
+        SwingUtilities.updateComponentTreeUI(this);
     }
     
     @Override
@@ -117,7 +118,6 @@ public class PanelFunciones extends JPanel {
                 nextLayout.draw(g2d, (float)(rectangle.getX()+(rectangle.getWidth()-nextLayout.getAdvance())/2), (float)((rectangle.getHeight()-nextLayout.getAscent()*2-nextLayout.getAscent())+rectangle.getY()));
                 nextLayout = lineBreakMeasurer.nextLayout(fontMetrics.stringWidth(intervaloString));
                 nextLayout.draw(g2d, (float)(rectangle.getX()+(rectangle.getWidth()-nextLayout.getAdvance())/2), (float)((rectangle.getHeight()-nextLayout.getAscent()*2+nextLayout.getAscent())+rectangle.getY()));
-//                g2d.drawString(intervaloString, (float)(rectangle.getX()+(rectangle.getWidth()-fontMetrics.stringWidth(intervaloString))/2), (float)y*60+30+fontMetrics.getHeight()/2+offsetY);
             }
             y++;
         }
@@ -167,12 +167,9 @@ public class PanelFunciones extends JPanel {
         panelFunciones.setBackground(Color.WHITE);
         frame.getContentPane().add(panelFunciones);
         frame.setSize(700, 400);
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                frame.setVisible(true);
-                frame.setLocationRelativeTo(null);
-            }
+        SwingUtilities.invokeLater(() -> {
+            frame.setVisible(true);
+            frame.setLocationRelativeTo(null);
         });
     }
     

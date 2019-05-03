@@ -1,5 +1,7 @@
 package org.intervalos.intervalos;
 
+import java.time.LocalTime;
+
 /**
  *
  * @author Víctor
@@ -25,9 +27,14 @@ public class Funcion {
         intervalo.start(hora, minuto);
         return this;
     }
+    
+    public Funcion inicia(LocalTime inicio) {
+        intervalo.start(inicio);
+        return this;
+    }
 
     public Intervalo getIntervalo() {
         return intervalo.duration(pelicula.getDuracion());
     }
-    
+
 }
