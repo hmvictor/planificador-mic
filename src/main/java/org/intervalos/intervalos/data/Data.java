@@ -1,9 +1,9 @@
-package org.intervalos.intervalos;
+package org.intervalos.intervalos.data;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.intervalos.intervalos.Pelicula;
 
 /**
  *
@@ -12,7 +12,6 @@ import java.util.Map;
 public class Data {
     private Map<String, Pelicula> peliculas=new HashMap<>();
     
-//    @JsonDeserialize(using = FuncionSerializer.class)
     private Map<String, List<InfoFuncion>> funciones=new HashMap<>();
 
     public Map<String, Pelicula> getPeliculas() {

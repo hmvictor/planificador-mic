@@ -1,4 +1,4 @@
-package org.intervalos.intervalos;
+package org.intervalos.intervalos.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;

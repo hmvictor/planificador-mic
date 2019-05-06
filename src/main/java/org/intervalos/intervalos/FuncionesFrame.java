@@ -1,9 +1,16 @@
 package org.intervalos.intervalos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,14 +19,21 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.filechooser.FileFilter;
+import org.intervalos.intervalos.data.Data;
+import org.intervalos.intervalos.data.Data2;
+import org.intervalos.intervalos.data.InfoFuncion;
+import org.intervalos.intervalos.data.SingleLocalDateDeserializer;
+import org.intervalos.intervalos.data.SingleLocalTimeDeserializer;
 
 /**
  *
  * @author Víctor
  */
 public class FuncionesFrame extends javax.swing.JFrame {
+    private Data2 data;
 
     /**
      * Creates new form FuncionesFrame
@@ -29,7 +43,40 @@ public class FuncionesFrame extends javax.swing.JFrame {
     }
     
     public void open(File file) throws IOException {
-        new Loader(file).execute();
+//        new Loader(file).execute();
+        new LoaderData(file).execute();
+    }
+    
+    public class LoaderData extends SwingWorker<Data2, Object> {
+        private File file;
+
+        public LoaderData(File file) {
+            this.file = file;
+        }
+        
+        @Override
+        protected Data2 doInBackground() throws Exception {
+            try(FileInputStream input=new FileInputStream(file)) {
+                /* Parsear json */
+                ObjectMapper objectMapper=new ObjectMapper();
+                SimpleModule simpleModule = new SimpleModule();
+                simpleModule.addDeserializer(LocalTime.class, new SingleLocalTimeDeserializer());
+                simpleModule.addKeyDeserializer(LocalDate.class, new SingleLocalDateDeserializer());
+                objectMapper.registerModule(simpleModule);
+                Data2 data = objectMapper.readValue(input, Data2.class);
+                return data;
+            }
+        }
+
+        @Override
+        protected void done() {
+            try {
+                FuncionesFrame.this.data=get();
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
     }
     
     public class Loader extends SwingWorker<Map<String, List<Funcion>>, Object> {
@@ -45,6 +92,9 @@ public class FuncionesFrame extends javax.swing.JFrame {
             try(FileInputStream input=new FileInputStream(file)) {
                 /* Parsear json */
                 ObjectMapper objectMapper=new ObjectMapper();
+                SimpleModule simpleModule = new SimpleModule();
+                simpleModule.addDeserializer(LocalTime.class, new SingleLocalTimeDeserializer());
+                objectMapper.registerModule(simpleModule);
                 Data data = objectMapper.readValue(input, Data.class);
                 for (Map.Entry<String, List<InfoFuncion>> entry : data.getFunciones().entrySet()) {
                     for (InfoFuncion infoFuncion : entry.getValue()) {
@@ -64,7 +114,7 @@ public class FuncionesFrame extends javax.swing.JFrame {
         @Override
         protected void done() {
             try {
-                panelFunciones1.setIntervalosPorLugar(get());
+                panelFunciones.setIntervalosPorLugar(get());
             } catch (InterruptedException ex) {
                 Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ExecutionException ex) {
@@ -84,8 +134,10 @@ public class FuncionesFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         fileChooser = new javax.swing.JFileChooser();
-        panelFunciones1 = new org.intervalos.intervalos.PanelFunciones();
+        panelFunciones = new org.intervalos.intervalos.PanelFunciones();
         jButton2 = new javax.swing.JButton();
+        labelFecha = new javax.swing.JLabel();
+        datePicker = new org.jdesktop.swingx.JXDatePicker();
 
         fileChooser.setFileFilter(new FileFilter() {
 
@@ -104,18 +156,18 @@ public class FuncionesFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Funciones");
 
-        panelFunciones1.setBackground(new java.awt.Color(255, 255, 255));
-        panelFunciones1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        panelFunciones.setBackground(new java.awt.Color(255, 255, 255));
+        panelFunciones.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout panelFunciones1Layout = new javax.swing.GroupLayout(panelFunciones1);
-        panelFunciones1.setLayout(panelFunciones1Layout);
-        panelFunciones1Layout.setHorizontalGroup(
-            panelFunciones1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout panelFuncionesLayout = new javax.swing.GroupLayout(panelFunciones);
+        panelFunciones.setLayout(panelFuncionesLayout);
+        panelFuncionesLayout.setHorizontalGroup(
+            panelFuncionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
         );
-        panelFunciones1Layout.setVerticalGroup(
-            panelFunciones1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 298, Short.MAX_VALUE)
+        panelFuncionesLayout.setVerticalGroup(
+            panelFuncionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 291, Short.MAX_VALUE)
         );
 
         jButton2.setText("Load Data");
@@ -125,22 +177,42 @@ public class FuncionesFrame extends javax.swing.JFrame {
             }
         });
 
+        labelFecha.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        labelFecha.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelFecha.setText("Fecha");
+
+        datePicker.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datePickerActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelFunciones1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(346, Short.MAX_VALUE)
-                .addComponent(jButton2)
+            .addComponent(panelFunciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(datePicker, javax.swing.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addComponent(labelFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelFunciones1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(labelFecha)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(panelFunciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(datePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -157,6 +229,29 @@ public class FuncionesFrame extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void datePickerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datePickerActionPerformed
+        Date input = datePicker.getDate();
+        LocalDate date = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Map<String, Map<String, List<LocalTime>>> selected = data.getProgramacion().get(date);
+        Map<String, List<Funcion>> funcionesPorSala=new HashMap<>();
+        for (Map.Entry<String, Map<String, List<LocalTime>>> funcionesPorPeliculaPorLugar : selected.entrySet()) {
+            List<Funcion> funciones=new LinkedList<>();
+            for (Map.Entry<String, List<LocalTime>> funcionesPorPelicula : funcionesPorPeliculaPorLugar.getValue().entrySet()) {
+                for (LocalTime inicio : funcionesPorPelicula.getValue()) {
+                    Pelicula pelicula = data.getPeliculas().get(funcionesPorPelicula.getKey());
+                    if(pelicula == null) {
+//                        throw new IllegalArgumentException(String.format("No existe tal película: %s", funcionesPorPelicula.getKey()));
+                        JOptionPane.showMessageDialog(this, String.format("No existe tal película: %s", funcionesPorPelicula.getKey()), "Atención", JOptionPane.ERROR_MESSAGE);
+                    }
+                    funciones.add(new Funcion().pelicula(pelicula).inicia(inicio));
+                }
+            }
+            funcionesPorSala.put(funcionesPorPeliculaPorLugar.getKey(), funciones);
+        }
+        panelFunciones.setIntervalosPorLugar(funcionesPorSala);
+        labelFecha.setText(date.format(DateTimeFormatter.ofPattern("dd-MMMM-yyyy")));
+    }//GEN-LAST:event_datePickerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,8 +289,10 @@ public class FuncionesFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private org.jdesktop.swingx.JXDatePicker datePicker;
     private javax.swing.JFileChooser fileChooser;
     private javax.swing.JButton jButton2;
-    private org.intervalos.intervalos.PanelFunciones panelFunciones1;
+    private javax.swing.JLabel labelFecha;
+    private org.intervalos.intervalos.PanelFunciones panelFunciones;
     // End of variables declaration//GEN-END:variables
 }

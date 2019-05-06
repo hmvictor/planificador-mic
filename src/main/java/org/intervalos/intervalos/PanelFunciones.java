@@ -144,31 +144,4 @@ public class PanelFunciones extends JPanel {
         return sourceWidth*scale;
     }
     
-    public static void main(String[] args) {
-        final JFrame frame=new JFrame();
-        frame.setTitle("Funciones por Sala");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        PanelFunciones panelFunciones = new PanelFunciones();
-        HashMap<String, List<Funcion>> map = new HashMap<>();
-        Pelicula pelicula1=new Pelicula("Película 1").duracion(60);
-        Pelicula pelicula2=new Pelicula("Película 2").duracion(90);
-        Pelicula pelicula3=new Pelicula("Película 3").duracion(60);
-        Pelicula pelicula4=new Pelicula("Película 4").duracion(85);
-        Pelicula pelicula5=new Pelicula("Película 5").duracion(60);
-        Pelicula pelicula6=new Pelicula("Película 6").duracion(85);
-        
-        map.put("Sala1", Arrays.asList(pelicula1.funcion(12, 45), pelicula2.funcion(14,30)));
-        map.put("Sala2", Arrays.asList(pelicula3.funcion(12, 30), pelicula4.funcion(14,0)));
-        map.put("Sala3", Arrays.asList(pelicula5.funcion(13, 0), pelicula6.funcion(15, 30)));
-        panelFunciones.setIntervalosPorLugar(map);
-        panelFunciones.setOpaque(true);
-        panelFunciones.setBackground(Color.WHITE);
-        frame.getContentPane().add(panelFunciones);
-        frame.setSize(700, 400);
-        SwingUtilities.invokeLater(() -> {
-            frame.setVisible(true);
-            frame.setLocationRelativeTo(null);
-        });
-    }
-    
 }
