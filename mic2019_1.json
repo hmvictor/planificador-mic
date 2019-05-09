@@ -1,0 +1,518 @@
+{
+    "peliculas": {
+        "LaCamarista": {
+            "nombre": "La camarista",
+            "duracionMinutos": 101
+        },
+        "JamasLlegaranAViejos": {
+            "nombre": "Jamás llegarán a viejos",
+            "duracionMinutos": 99
+        },
+        "LaCasaJuntoAlMar": {
+            "nombre": "La casa junto al mar",
+            "duracionMinutos": 107
+        },
+        "MariaPorCallas": {
+            "nombre": "Maria por Callas",
+            "duracionMinutos": 113
+        },
+        "VenYMira": {
+            "nombre": "Ven y mira",
+            "duracionMinutos": 142
+        },
+        "UnDiaMasConVida": {
+            "nombre": "Un día más con vida",
+            "duracionMinutos": 85
+        },
+        "EnGuerra": {
+            "nombre": "En guerra",
+            "duracionMinutos": 114
+        },
+        "PlazaParis": {
+            "nombre": "Plaza París",
+            "duracionMinutos": 110
+        },
+        "Leto": {
+            "nombre": "Leto",
+            "duracionMinutos": 128
+        },
+        "OchoDeCadaDiez": {
+            "nombre": "Ocho de cada diez",
+            "duracionMinutos": 107
+        },
+        "Atardecer": {
+            "nombre": "Atardecer",
+            "duracionMinutos": 141
+        },
+        "LaBoda": {
+            "nombre": "La boda",
+            "duracionMinutos": 98
+        },
+        "Angelo": {
+            "nombre": "Angelo",
+            "duracionMinutos": 110
+        },
+        "Asako": {
+            "nombre": "Asako l & ll: Soñar o despertar",
+            "duracionMinutos": 116
+        }
+    },
+    "programacion": {
+        "12-04-2019": {
+            "Sala 1": {
+                "LaCamarista" : [
+                    "12:00",
+                    "17:30"
+                ],
+                "JamasLlegaranAViejos": [
+                    "15:00",
+                    "20:00"
+                ]
+            }
+        },
+        "13-04-2019": {
+            "Sala 1": {
+                "LaCamarista" : [
+                    "15:00",
+                    "20:00"
+                ],
+                "JamasLlegaranAViejos": [
+                    "12:00",
+                    "17:30"
+                ]
+            }
+        },
+        "14-04-2019": {
+            "Sala 1": {
+                "LaCamarista" : [
+                    "12:00",
+                    "17:30"
+                ],
+                "JamasLlegaranAViejos": [
+                    "15:00",
+                    "20:00"
+                ]
+            },
+            "Sala 2": {
+                "LaCasaJuntoAlMar": [
+                    "12:30",
+                    "18:30"
+                ],
+                "MariaPorCallas": [
+                    "16:00",
+                    "21:00"
+                ]
+            }
+        },
+        "15-04-2019": {
+            "Sala 1": {
+                "LaCamarista" : [
+                    "15:00",
+                    "20:00"
+                ],
+                "JamasLlegaranAViejos": [
+                    "12:00",
+                    "17:30"
+                ]
+            },
+            "Sala 2": {
+                "LaCasaJuntoAlMar": [
+                    "16:00",
+                    "21:00"
+                ],
+                "MariaPorCallas": [
+                    "12:30",
+                    "18:30"
+                ]
+            }
+        },
+        "16-04-2019": {
+            "Sala 1": {
+                "LaCamarista" : [
+                    "12:00",
+                    "17:30"
+                ],
+                "JamasLlegaranAViejos": [
+                    "15:00",
+                    "20:00"
+                ]
+            },
+            "Sala 2": {
+                "LaCasaJuntoAlMar": [
+                    "12:30",
+                    "18:30"
+                ],
+                "MariaPorCallas": [
+                    "16:00",
+                    "21:00"
+                ]
+            },
+            "Sala 3": {
+                "VenYMira": [
+                    "12:45",
+                    "17:45"
+                ],
+                "UnDiaMasConVida": [
+                    "15:45",
+                    "20:45"
+                ]
+            }
+        },
+        "17-04-2019": {
+            "Sala 1": {
+                "LaCamarista" : [
+                    "15:00",
+                    "20:00"
+                ],
+                "JamasLlegaranAViejos": [
+                    "12:00",
+                    "17:30"
+                ]
+            },
+            "Sala 2": {
+                "LaCasaJuntoAlMar": [
+                    "16:00",
+                    "21:00"
+                ],
+                "MariaPorCallas": [
+                    "12:30",
+                    "18:30"
+                ]
+            },
+            "Sala 3": {
+                "VenYMira": [
+                    "15:45",
+                    "20:45"
+                ],
+                "UnDiaMasConVida": [
+                    "12:45",
+                    "17:45"
+                ]
+            }
+        },
+        "18-04-2019": {
+            "Sala 2": {
+                "LaCasaJuntoAlMar": [
+                    "12:30",
+                    "18:30"
+                ],
+                "MariaPorCallas": [
+                    "16:00",
+                    "21:00"
+                ]
+            },
+            "Sala 3": {
+                "VenYMira": [
+                    "12:45",
+                    "17:45"
+                ],
+                "UnDiaMasConVida": [
+                    "15:45",
+                    "20:45"
+                ]
+            },
+            "Sala 1" : {
+                "EnGuerra": [
+                    "12:00",
+                    "17:30"
+                ],
+                "PlazaParis": [
+                    "15:00",
+                    "20:00"
+                ]
+            }
+        },
+        "19-04-2019": {
+            "Sala 2": {
+                "LaCasaJuntoAlMar": [
+                    "16:00",
+                    "21:00"
+                ],
+                "MariaPorCallas": [
+                    "12:30",
+                    "18:30"
+                ]
+            },
+            "Sala 3": {
+                "VenYMira": [
+                    "15:45",
+                    "20:45"
+                ],
+                "UnDiaMasConVida": [
+                    "12:45",
+                    "17:45"
+                ]
+            },
+            "Sala 1" : {
+                "EnGuerra": [
+                    "15:00",
+                    "20:00"
+                ],
+                "PlazaParis": [
+                    "12:00",
+                    "17:30"
+                ]
+            }
+        },
+        "20-04-2019": {
+            "Sala 3": {
+                "VenYMira": [
+                    "12:45",
+                    "17:45"
+                ],
+                "UnDiaMasConVida": [
+                    "15:45",
+                    "20:45"
+                ]
+            },
+            "Sala 1" : {
+                "EnGuerra": [
+                    "12:00",
+                    "17:30"
+                ],
+                "PlazaParis": [
+                    "15:00",
+                    "20:00"
+                ]
+            },
+            "Sala 2": {
+                "Leto": [
+                    "12:30",
+                    "18:15"
+                ],
+                "OchoDeCadaDiez": [
+                    "15:30",
+                    "21:00"
+                ]
+            }
+        },
+        "21-04-2019": {
+            "Sala 3": {
+                "VenYMira": [
+                    "15:45",
+                    "20:45"
+                ],
+                "UnDiaMasConVida": [
+                    "12:45",
+                    "17:45"
+                ]
+            },
+            "Sala 1" : {
+                "EnGuerra": [
+                    "15:00",
+                    "20:00"
+                ],
+                "PlazaParis": [
+                    "12:00",
+                    "17:30"
+                ]
+            },
+            "Sala 2": {
+                "Leto": [
+                    "15:15",
+                    "21:00"
+                ],
+                "OchoDeCadaDiez": [
+                    "12:30",
+                    "18:30"
+                ]
+            }
+        },
+        "22-04-2019": {
+            "Sala 1" : {
+                "EnGuerra": [
+                    "12:00",
+                    "17:30"
+                ],
+                "PlazaParis": [
+                    "15:00",
+                    "20:00"
+                ]
+            },
+            "Sala 2": {
+                "Leto": [
+                    "12:30",
+                    "18:15"
+                ],
+                "OchoDeCadaDiez": [
+                    "15:30",
+                    "21:00"
+                ]
+            },
+            "Sala 3" :{
+                "Atardecer": [
+                    "12:45",
+                    "17:45"
+                ],
+                "LaBoda": [
+                    "15:45",
+                    "20:45"
+                ]
+            }
+        },
+        "23-04-2019": {
+            "Sala 1" : {
+                "EnGuerra": [
+                    "15:00",
+                    "20:00"
+                ],
+                "PlazaParis": [
+                    "12:00",
+                    "17:30"
+                ]
+            },
+            "Sala 2": {
+                "Leto": [
+                    "15:15",
+                    "21:00"
+                ],
+                "OchoDeCadaDiez": [
+                    "12:30",
+                    "18:30"
+                ]
+            },
+            "Sala 3" :{
+                "Atardecer": [
+                    "15:45",
+                    "20:45"
+                ],
+                "LaBoda": [
+                    "13:45",
+                    "18:45"
+                ]
+            }
+        },
+        "24-04-2019": {
+            "Sala 2": {
+                "Leto": [
+                    "12:30",
+                    "18:15"
+                ],
+                "OchoDeCadaDiez": [
+                    "15:30",
+                    "21:00"
+                ]
+            },
+            "Sala 3" :{
+                "Atardecer": [
+                    "12:45",
+                    "17:45"
+                ],
+                "LaBoda": [
+                    "15:45",
+                    "20:45"
+                ]
+            },
+            "Sala 1" :{
+                "Angelo": [
+                    "12:00",
+                    "17:30"
+                ],
+                "Asako": [
+                    "15:00",
+                    "20:00"
+                ]
+            }
+        },
+        "25-04-2019": {
+            "Sala 2": {
+                "Leto": [
+                    "15:15",
+                    "21:00"
+                ],
+                "OchoDeCadaDiez": [
+                    "12:30",
+                    "18:30"
+                ]
+            },
+            "Sala 3" :{
+                "Atardecer": [
+                    "15:45",
+                    "20:45"
+                ],
+                "LaBoda": [
+                    "13:45",
+                    "18:45"
+                ]
+            },
+            "Sala 1" :{
+                "Angelo": [
+                    "14:45",
+                    "20:00"
+                ],
+                "Asako": [
+                    "12:00",
+                    "17:30"
+                ]
+            }
+        },
+        "26-04-2019": {
+            "Sala 3" :{
+                "Atardecer": [
+                    "12:45",
+                    "17:45"
+                ],
+                "LaBoda": [
+                    "15:45",
+                    "20:45"
+                ]
+            },
+            "Sala 1" :{
+                "Angelo": [
+                    "12:00",
+                    "17:30"
+                ],
+                "Asako": [
+                    "15:00",
+                    "20:00"
+                ]
+            }
+        },
+        "27-04-2019": {
+            "Sala 3" :{
+                "Atardecer": [
+                    "15:45",
+                    "20:45"
+                ],
+                "LaBoda": [
+                    "13:45",
+                    "18:45"
+                ]
+            },
+            "Sala 1" :{
+                "Angelo": [
+                    "15:00",
+                    "20:00"
+                ],
+                "Asako": [
+                    "12:00",
+                    "17:30"
+                ]
+            }
+        },
+        "28-04-2019": {
+            "Sala 1" :{
+                "Angelo": [
+                    "12:00",
+                    "17:30"
+                ],
+                "Asako": [
+                    "15:00",
+                    "20:00"
+                ]
+            }
+        },
+        "29-04-2019": {
+            "Sala 1" :{
+                "Angelo": [
+                    "15:00",
+                    "20:00"
+                ],
+                "Asako": [
+                    "12:00",
+                    "17:30"
+                ]
+            }
+        }
+    }
+}
