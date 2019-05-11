@@ -52,7 +52,7 @@ public class PanelFunciones extends JPanel {
         }
         minMinutes=minMinutes - minMinutes % 30;
         maxMinutes=maxMinutes + (60-maxMinutes % 30);
-        SwingUtilities.updateComponentTreeUI(this);
+        getParent().repaint();
     }
     
     @Override

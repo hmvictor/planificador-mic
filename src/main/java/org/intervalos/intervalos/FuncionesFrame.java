@@ -9,12 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,8 +45,15 @@ public class FuncionesFrame extends javax.swing.JFrame {
     }
     
     public void open(File file) throws IOException {
-//        new Loader(file).execute();
         new LoaderData(file).execute();
+    }
+
+    public void setData(Data2 data) {
+        this.data = data;
+        Set<LocalDate> fechas = data.getProgramacion().keySet();
+        datePicker.getMonthView().setLowerBound(Date.from(Collections.min(fechas).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        datePicker.getMonthView().setUpperBound(Date.from(Collections.max(fechas).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        datePicker.getMonthView().setFirstDisplayedDay(datePicker.getMonthView().getLowerBound());
     }
     
     public class LoaderData extends SwingWorker<Data2, Object> {
@@ -71,7 +80,7 @@ public class FuncionesFrame extends javax.swing.JFrame {
         @Override
         protected void done() {
             try {
-                FuncionesFrame.this.data=get();
+                setData(get());
             } catch (InterruptedException | ExecutionException ex) {
                 Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
