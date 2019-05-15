@@ -13,8 +13,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -73,6 +75,19 @@ public class FuncionesFrame extends javax.swing.JFrame {
                 simpleModule.addKeyDeserializer(LocalDate.class, new SingleLocalDateDeserializer());
                 objectMapper.registerModule(simpleModule);
                 Data2 data = objectMapper.readValue(input, Data2.class);
+                Set<String> peliculasNoEncontradas=new LinkedHashSet<>();
+                for (Map.Entry<LocalDate, Map<String, Map<String, List<LocalTime>>>> funcionesPorFecha : data.getProgramacion().entrySet()) {
+                    for (Map.Entry<String, Map<String, List<LocalTime>>> funcionesPorSala : funcionesPorFecha.getValue().entrySet()) {
+                        for (Map.Entry<String, List<LocalTime>> funcionesPorPelicula : funcionesPorSala.getValue().entrySet()) {
+                            if(!data.getPeliculas().containsKey(funcionesPorPelicula.getKey())){
+                                peliculasNoEncontradas.add(funcionesPorPelicula.getKey());
+                            }
+                        }
+                    }
+                }
+                if(!peliculasNoEncontradas.isEmpty()) {
+                    throw new PeliculasNoDefinidasException(peliculasNoEncontradas);
+                }
                 return data;
             }
         }
@@ -83,56 +98,14 @@ public class FuncionesFrame extends javax.swing.JFrame {
                 setData(get());
             } catch (InterruptedException | ExecutionException ex) {
                 Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
+                if(ex.getCause() instanceof PeliculasNoDefinidasException) {
+                    JOptionPane.showMessageDialog(panelFunciones, "Las siguientes películas en la programación no fueron definidas: "+((PeliculasNoDefinidasException)ex.getCause()).getPeliculasNoEncontradas().toString(), "Atención", JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
         
     }
     
-    public class Loader extends SwingWorker<Map<String, List<Funcion>>, Object> {
-        private File file;
-
-        public Loader(File file) {
-            this.file = file;
-        }
-        
-        @Override
-        protected Map<String, List<Funcion>> doInBackground() throws Exception {
-            Map<String, List<Funcion>> funcionesPorLugar=new LinkedHashMap<>();
-            try(FileInputStream input=new FileInputStream(file)) {
-                /* Parsear json */
-                ObjectMapper objectMapper=new ObjectMapper();
-                SimpleModule simpleModule = new SimpleModule();
-                simpleModule.addDeserializer(LocalTime.class, new SingleLocalTimeDeserializer());
-                objectMapper.registerModule(simpleModule);
-                Data data = objectMapper.readValue(input, Data.class);
-                for (Map.Entry<String, List<InfoFuncion>> entry : data.getFunciones().entrySet()) {
-                    for (InfoFuncion infoFuncion : entry.getValue()) {
-                        Funcion funcion=new Funcion()
-                            .pelicula(data.getPeliculas().get(infoFuncion.getIdPelicula()))
-                            .inicia(infoFuncion.getInicio());
-                        if(!funcionesPorLugar.containsKey(entry.getKey())) {
-                            funcionesPorLugar.put(entry.getKey(), new LinkedList<>());
-                        }
-                        funcionesPorLugar.get(entry.getKey()).add(funcion);
-                    }
-                }
-                return funcionesPorLugar;
-            }
-        }
-
-        @Override
-        protected void done() {
-            try {
-                panelFunciones.setIntervalosPorLugar(get());
-            } catch (InterruptedException ex) {
-                Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ExecutionException ex) {
-                Logger.getLogger(FuncionesFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -250,7 +223,6 @@ public class FuncionesFrame extends javax.swing.JFrame {
                 for (LocalTime inicio : funcionesPorPelicula.getValue()) {
                     Pelicula pelicula = data.getPeliculas().get(funcionesPorPelicula.getKey());
                     if(pelicula == null) {
-//                        throw new IllegalArgumentException(String.format("No existe tal película: %s", funcionesPorPelicula.getKey()));
                         JOptionPane.showMessageDialog(this, String.format("No existe tal película: %s", funcionesPorPelicula.getKey()), "Atención", JOptionPane.ERROR_MESSAGE);
                     }
                     funciones.add(new Funcion().pelicula(pelicula).inicia(inicio));
